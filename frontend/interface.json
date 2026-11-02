@@ -1,0 +1,338 @@
+{
+  "title": "智能代码生成平台 API 接口文档",
+  "version": "1.0.0",
+  "baseUrl": "http://localhost:8080/api",
+  "description": "前端页面通过以下接口与后端交互。所有接口返回 JSON 格式数据。",
+  "commonHeaders": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {token}"
+  },
+  "errorResponse": {
+    "description": "所有接口在失败时统一返回以下格式",
+    "example": {
+      "code": 401,
+      "message": "错误描述信息",
+      "data": null
+    }
+  },
+  "interfaces": {
+    "auth": [
+      {
+        "name": "用户登录",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "auth": false,
+        "request": {
+          "body": {
+            "username": "string, 必填, 用户名",
+            "password": "string, 必填, 密码"
+          },
+          "example": {
+            "username": "admin",
+            "password": "123456"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "登录成功",
+            "data": {
+              "token": "string, JWT令牌",
+              "user": {
+                "id": "number, 用户ID",
+                "username": "string, 用户名",
+                "email": "string, 邮箱",
+                "avatar": "string, 头像URL"
+              }
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "登录成功",
+            "data": {
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+              "user": {
+                "id": 1,
+                "username": "admin",
+                "email": "admin@example.com",
+                "avatar": ""
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "用户注册",
+        "method": "POST",
+        "path": "/api/auth/register",
+        "auth": false,
+        "request": {
+          "body": {
+            "username": "string, 必填, 用户名, 3-20字符",
+            "password": "string, 必填, 密码, 6-32字符",
+            "email": "string, 必填, 邮箱"
+          },
+          "example": {
+            "username": "newuser",
+            "password": "123456",
+            "email": "user@example.com"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "注册成功",
+            "data": {
+              "token": "string, JWT令牌",
+              "user": {
+                "id": "number, 用户ID",
+                "username": "string, 用户名",
+                "email": "string, 邮箱",
+                "avatar": "string, 头像URL"
+              }
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "注册成功",
+            "data": {
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+              "user": {
+                "id": 2,
+                "username": "newuser",
+                "email": "user@example.com",
+                "avatar": ""
+              }
+            }
+          }
+        }
+      },
+      {
+        "name": "获取当前用户信息",
+        "method": "GET",
+        "path": "/api/auth/user",
+        "auth": true,
+        "request": {
+          "headers": {
+            "Authorization": "Bearer {token}"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "user": {
+                "id": "number",
+                "username": "string",
+                "email": "string",
+                "avatar": "string",
+                "createdAt": "string, 注册时间"
+              }
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "user": {
+                "id": 1,
+                "username": "admin",
+                "email": "admin@example.com",
+                "avatar": "",
+                "createdAt": "2026-01-01T00:00:00Z"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "chat": [
+      {
+        "name": "发送对话消息",
+        "method": "POST",
+        "path": "/api/chat/send",
+        "auth": true,
+        "description": "发送用户消息并获取AI生成的代码回复",
+        "request": {
+          "headers": {
+            "Authorization": "Bearer {token}"
+          },
+          "body": {
+            "chatId": "number, 选填, 对话ID, 不传则创建新对话",
+            "message": "string, 必填, 用户消息内容"
+          },
+          "example": {
+            "chatId": 1,
+            "message": "用 Python 写一个快速排序算法"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "success",
+            "data": {
+              "chatId": "number, 对话ID",
+              "reply": "string, AI回复的markdown格式文本",
+              "code": "string, 提取出的代码块(可单独复制)",
+              "language": "string, 代码语言"
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "success",
+            "data": {
+              "chatId": 1,
+              "reply": "以下是快速排序的Python实现：\n\n```python\ndef quicksort(arr):\n    ...\n```",
+              "code": "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[0]\n    left = [x for x in arr[1:] if x <= pivot]\n    right = [x for x in arr[1:] if x > pivot]\n    return quicksort(left) + [pivot] + quicksort(right)",
+              "language": "python"
+            }
+          }
+        }
+      },
+      {
+        "name": "获取对话历史列表",
+        "method": "GET",
+        "path": "/api/chat/history",
+        "auth": true,
+        "request": {
+          "headers": {
+            "Authorization": "Bearer {token}"
+          },
+          "query": {
+            "page": "number, 选填, 页码, 默认1",
+            "pageSize": "number, 选填, 每页条数, 默认20"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "total": "number, 总条数",
+              "list": [
+                {
+                  "id": "number, 对话ID",
+                  "title": "string, 对话标题",
+                  "lastMessage": "string, 最后一条消息摘要",
+                  "updatedAt": "string, 最后更新时间"
+                }
+              ]
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "total": 10,
+              "list": [
+                {
+                  "id": 1,
+                  "title": "快速排序实现",
+                  "lastMessage": "以下是快速排序的Python实现...",
+                  "updatedAt": "2026-05-19T12:00:00Z"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "获取对话消息详情",
+        "method": "GET",
+        "path": "/api/chat/messages/{chatId}",
+        "auth": true,
+        "request": {
+          "headers": {
+            "Authorization": "Bearer {token}"
+          },
+          "params": {
+            "chatId": "number, 路径参数, 对话ID"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "chatId": "number",
+              "title": "string, 对话标题",
+              "messages": [
+                {
+                  "id": "number, 消息ID",
+                  "role": "string, user|assistant",
+                  "content": "string, 消息内容(markdown格式)",
+                  "code": "string, 代码块内容",
+                  "language": "string, 代码语言",
+                  "createdAt": "string, 发送时间"
+                }
+              ]
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "获取成功",
+            "data": {
+              "chatId": 1,
+              "title": "快速排序实现",
+              "messages": [
+                {
+                  "id": 1,
+                  "role": "user",
+                  "content": "用 Python 写一个快速排序算法",
+                  "code": null,
+                  "language": null,
+                  "createdAt": "2026-05-19T12:00:00Z"
+                },
+                {
+                  "id": 2,
+                  "role": "assistant",
+                  "content": "以下是快速排序的Python实现：\n\n```python\ndef quicksort(arr):\n    ...\n```",
+                  "code": "def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[0]\n    left = [x for x in arr[1:] if x <= pivot]\n    right = [x for x in arr[1:] if x > pivot]\n    return quicksort(left) + [pivot] + quicksort(right)",
+                  "language": "python",
+                  "createdAt": "2026-05-19T12:00:02Z"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "创建新对话",
+        "method": "POST",
+        "path": "/api/chat/new",
+        "auth": true,
+        "request": {
+          "headers": {
+            "Authorization": "Bearer {token}"
+          }
+        },
+        "response": {
+          "success": {
+            "code": 200,
+            "message": "创建成功",
+            "data": {
+              "chatId": "number, 新对话ID",
+              "title": "string, 对话标题, 默认为'新对话'"
+            }
+          },
+          "example": {
+            "code": 200,
+            "message": "创建成功",
+            "data": {
+              "chatId": 3,
+              "title": "新对话"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "statusCodes": {
+    "200": "请求成功",
+    "400": "请求参数错误",
+    "401": "未授权, token无效或已过期",
+    "404": "资源不存在",
+    "500": "服务器内部错误"
+  }
+}

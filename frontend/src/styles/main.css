@@ -1,0 +1,123 @@
+/* ============================================================
+   AI Code Generation Platform — Global Theme
+   Inspired by: Bolt.new / Cursor / V0 / Linear
+   ============================================================ */
+
+:root {
+  /* Deep Slate Base */
+  --bg-root: #08080e;
+  --bg-primary: #0c0c16;
+  --bg-secondary: #111122;
+  --bg-tertiary: #16162c;
+  --bg-sidebar: #0e0e1c;
+  --bg-input: #13132e;
+  --bg-hover: rgba(255, 255, 255, 0.03);
+  --bg-active: rgba(99, 102, 241, 0.08);
+
+  /* Code & Bubble */
+  --bg-bubble-user: #2563eb;
+  --bg-bubble-ai: #161631;
+  --bg-code: #080816;
+
+  /* Text */
+  --text-primary: #e4e4f0;
+  --text-secondary: #9494b8;
+  --text-muted: #585880;
+
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(99, 102, 241, 0.15);
+
+  /* Brand Accent */
+  --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-hover: #4f46e5;
+  --accent-glow: rgba(99, 102, 241, 0.3);
+
+  /* Semantic */
+  --danger: #f43f5e;
+  --danger-bg: rgba(244, 63, 94, 0.1);
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.1);
+  --warning: #f59e0b;
+
+  /* Misc */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 14px;
+  --shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.08);
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-root);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== Scrollbar — Thin & Ghost ========== */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.12); }
+
+/* ========== Selection Highlight ========== */
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #fff;
+}
+
+/* ========== Element Plus Overrides ========== */
+.el-tree {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+.el-tree-node__content:hover {
+  background: var(--bg-hover) !important;
+}
+.el-tree-node.is-current > .el-tree-node__content {
+  background: var(--bg-active) !important;
+  color: var(--text-primary) !important;
+}
+.el-select .el-input__wrapper {
+  background: var(--bg-input) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: none !important;
+}
+.el-dialog {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-lg) !important;
+}
+.el-dialog__header { border-bottom: 1px solid var(--border-color); }
+.el-dialog__title { color: var(--text-primary); }
+.el-button--primary {
+  --el-button-bg-color: var(--accent);
+  --el-button-border-color: var(--accent);
+}
+.el-progress-bar__outer { background: rgba(255,255,255,0.06) !important; }
+.el-progress-bar__inner { background: linear-gradient(90deg, var(--accent), #a78bfa) !important; }
